@@ -1,0 +1,34 @@
+{%- import 'macro/filters.sql.njk' as filters %}
+
+select
+    date,
+    hq,
+    st,
+    div,
+    reg,
+    type,
+    symbol,
+    company_name,
+    ccg as rating,
+    ccr,
+    ccs,
+    cast(total_followers as INT64) as total_followers,
+    cast(linkedin_followers as INT64) as linkedin_followers,
+    cast(facebook_followers as INT64) as facebook_followers,
+    cast(youtube_followers as INT64) as youtube_followers,
+    cast(twitter_followers as INT64) as twitter_followers,
+    row_number() over(order by ccr) as rank
+from
+    reports_data.master_database_table_WEBAPP
+where
+    symbol in (
+        select
+            symbol
+        from
+            reports_data.master_database_table_WEBAPP
+        where
+            1 = 1
+            and date = (select max(date) from reports_data.master_database_table_WEBAPP)
+            and ccr <= 24
+            and {{ filters.globalFilter(company_name, DIV, HQ, REG, ST, symbol, TYPE) }}
+    )

@@ -1,0 +1,13 @@
+services:
+  backend:
+    container_name: cctv-backend
+    image: us-docker.pkg.dev/${PROJECT_ID}/docker-1/cctv-backend:master
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    volumes:
+      - ./service-account.json:/tmp/service-account.json
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/service-account.json
+    ports:
+      - 80:5000

@@ -1,0 +1,26 @@
+{%- import 'macro/filters.sql.njk' as filters %}
+
+select
+    *
+from
+    (
+        select
+            hq,
+            st,
+            div,
+            reg,
+            type,
+            symbol,
+            company_name,
+            logo_url,
+            row_number() over(order by CCR) as rank,
+            ccr as ccr
+        from
+            reports_data.master_database_table_WEBAPP
+        where
+            1 = 1
+            and date = (select max(date) from reports_data.master_database_table_WEBAPP)
+            and {{ filters.globalFilter(company_name, DIV, HQ, REG, ST, symbol, TYPE) }}
+    )
+where
+    rank <= 3

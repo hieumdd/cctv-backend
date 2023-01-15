@@ -1,0 +1,23 @@
+{%- macro globalFilter(company_name, DIV, HQ, reg, ST, symbol, TYPE) -%}
+    (
+        1 = 1
+        {% if company_name %}
+        and company_name = {{ company_name | quote }}
+        {% endif %}
+        {% if div %}
+        and div = {{ div | quote }}
+        {% endif %}
+        {% if reg %}
+        and reg = {{ reg | quote }}
+        {% endif %}
+        {% if st %}
+        and st = {{ st | quote }}
+        {% endif %}
+        {% if symbol %}
+        and symbol = {{ symbol | quote }}
+        {% endif %}
+        {% if type %}
+        and type = {{ type | quote }}
+        {% endif %}
+    )
+{%- endmacro -%}
