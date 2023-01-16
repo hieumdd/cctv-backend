@@ -1,7 +1,9 @@
 services:
   backend:
     container_name: cctv-backend
-    image: us-docker.pkg.dev/${PROJECT_ID}/docker-1/cctv-backend:master
+    image: us-docker.pkg.dev/cctc-353018/docker-1/cctv-backend:master
+    build:
+      context: .
     restart: unless-stopped
     env_file:
       - ./.env

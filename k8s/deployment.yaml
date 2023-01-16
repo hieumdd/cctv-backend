@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cctv-backend
+spec:
+  selector:
+    matchLabels:
+      app: cctv-backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cctv-backend
+    spec:
+      containers:
+        - name: cctv-backend
+          image: us-docker.pkg.dev/cctc-353018/docker-1/cctv-backend:master
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: backend
+          volumeMounts:
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+              ephemeral-storage: 1Gi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+              ephemeral-storage: 1Gi
+      volumes:
+        - name: google-cloud-key
+          secret:
+            secretName: service-account-key

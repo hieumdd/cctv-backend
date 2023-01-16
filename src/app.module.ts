@@ -5,6 +5,7 @@ import { RouterModule } from '@nestjs/core';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { AppController } from './app.controller';
 import { AnalyticsModule } from './analytics/analytics.module';
 
 const routes = [
@@ -29,5 +30,6 @@ const routes = [
         ...routes.map(({ module }) => module),
         RouterModule.register(routes),
     ],
+    controllers: [AppController],
 })
 export class AppModule {}
