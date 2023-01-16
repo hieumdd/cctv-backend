@@ -2,7 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { AnalyticsService } from '../analytics.service';
-import { GlobalFilterQueryDto, DateFilterQueryDto } from '../analytics.dto';
+import { GlobalFilterQueryDto, DateFilterQueryDto, DateLevelQueryDto } from '../analytics.dto';
 
 const route = 'top-24';
 
@@ -23,12 +23,14 @@ export class Top24Controller {
 
     @Get('trend')
     async trend(
-        @Query() globalFilterDto: GlobalFilterQueryDto,
+        @Query() dateLevelDto: DateLevelQueryDto,
         @Query() dateFilterDto: DateFilterQueryDto,
+        @Query() globalFilterDto: GlobalFilterQueryDto,
     ) {
         return this.analyticsService.query(`${route}/trend`, {
-            ...globalFilterDto,
+            ...dateLevelDto,
             ...dateFilterDto,
+            ...globalFilterDto,
         });
     }
 }

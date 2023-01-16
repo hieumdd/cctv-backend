@@ -22,12 +22,25 @@ describe('analytics.service', () => {
     });
 
     describe('top-24', () => {
-        it.each(['top-24/top-3-ccr'])('%p', async (route) => {
-            console.log(route);
-            return analyticsService.query(route, {}).then((res) => {
-                console.log(JSON.stringify(res.data.slice(0, 5)));
+        it('top-24/top-3-ccr', async () => {
+            return analyticsService.query('top-24/top-3-ccr', {}).then((res) => {
+                expect(res).toBeTruthy();
+            });
+        });
+        it('top-24/side-table', async () => {
+            return analyticsService.query('top-24/side-table', {}).then((res) => {
+                expect(res).toBeTruthy();
+            });
+        });
+        it('top-24/trend', async () => {
+            const options = {
+                level: 'week',
+                start: '2022-01-01',
+                end: '2022-02-01',
+            };
+            return analyticsService.query('top-24/trend', options).then((res) => {
                 expect(res).toBeTruthy();
             });
         });
     });
-})
+});

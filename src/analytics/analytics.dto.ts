@@ -12,3 +12,13 @@ export class DateFilterQueryDto {
     start: string;
     end: string;
 }
+
+enum DateLevel {
+    day = 'day',
+    week = 'week',
+    month = 'month',
+}
+
+export class DateLevelQueryDto {
+    level: DateLevel
+}
