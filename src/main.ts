@@ -1,18 +1,18 @@
+import { RequestMethod } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
-import { CloudLoggingLogger } from './logging/logging.service';
 
 const bootstrap = async () => {
     const app = await NestFactory.create(AppModule, {
+        bufferLogs: true,
         cors: { origin: true, credentials: true },
-        logger: new CloudLoggingLogger(),
     });
 
-    const config = new DocumentBuilder().setTitle('CCTV Backend').addBearerAuth().build();
+    const config = new DocumentBuilder().setTitle('cctv-backend').addBearerAuth().build();
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api', app, document);
+    SwaggerModule.setup('docs', app, document);
 
     await app.listen(5000);
 };
