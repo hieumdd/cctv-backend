@@ -8,10 +8,7 @@ import { Token } from './token.interface';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        private readonly jwtService: JwtService,
-        private readonly userService: UserService,
-    ) {}
+    constructor(private readonly jwtService: JwtService, private readonly userService: UserService) {}
 
     getJwt(id: number): string {
         return this.jwtService.sign(<Token>{ id });
@@ -34,15 +31,9 @@ export class AuthService {
             })
             .catch((err) => {
                 if (err?.code === 23505) {
-                    throw new HttpException(
-                        'User with that email already exists',
-                        HttpStatus.BAD_REQUEST,
-                    );
+                    throw new HttpException('User with that email already exists', HttpStatus.BAD_REQUEST);
                 }
-                throw new HttpException(
-                    'Something went wrong',
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                );
+                throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
             });
     }
 
@@ -52,20 +43,14 @@ export class AuthService {
             await this.verifyPassword(authDto.password, user.password);
             return user;
         } catch (error) {
-            throw new HttpException(
-                'Wrong credentials provided',
-                HttpStatus.BAD_REQUEST,
-            );
+            throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
         }
     }
 
     async verifyPassword(plain: string, hashed: string) {
         const isPasswordMatching = await bcrypt.compare(plain, hashed);
         if (!isPasswordMatching) {
-            throw new HttpException(
-                'Wrong credentials provided',
-                HttpStatus.BAD_REQUEST,
-            );
+            throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
         }
     }
 }
