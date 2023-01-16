@@ -7,7 +7,7 @@ on:
 concurrency: ${{ github.ref }}-${{ github.workflow }}
 
 env:
-  IMAGE: us-docker.pkg.dev/voltaic-country-280607/gcr.io/vuanem-bi-portal/backend:${{ github.ref_name }}
+  IMAGE: us-docker.pkg.dev/cctc-353018/docker-1/cctv-backend:${{ github.ref_name }}
 
 jobs:
   build:
