@@ -1,4 +1,4 @@
-import { RequestMethod } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
@@ -13,6 +13,8 @@ const bootstrap = async () => {
     const config = new DocumentBuilder().setTitle('cctv-backend').addBearerAuth().build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('docs', app, document);
+
+    app.useGlobalPipes(new ValidationPipe());
 
     await app.listen(5000);
 };

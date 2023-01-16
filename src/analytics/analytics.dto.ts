@@ -1,3 +1,5 @@
+import { IsDateString } from 'class-validator';
+
 export class GlobalFilterQueryDto {
     companyName?: string;
     div?: string;
@@ -9,7 +11,10 @@ export class GlobalFilterQueryDto {
 }
 
 export class DateFilterQueryDto {
+    @IsDateString()
     start: string;
+
+    @IsDateString()
     end: string;
 }
 
@@ -20,5 +25,5 @@ enum DateLevel {
 }
 
 export class DateLevelQueryDto {
-    level: DateLevel
+    level: DateLevel;
 }
