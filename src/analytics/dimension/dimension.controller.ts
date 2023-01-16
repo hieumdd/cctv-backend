@@ -20,11 +20,6 @@ export class DimensionController {
         return this.analyticsService.query(`${route}/div`);
     }
 
-    @Get('hq')
-    async hq() {
-        return this.analyticsService.query(`${route}/hq`);
-    }
-
     @Get('reg')
     async reg() {
         return this.analyticsService.query(`${route}/reg`);
