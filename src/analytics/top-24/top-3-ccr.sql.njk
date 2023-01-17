@@ -1,26 +1,47 @@
 {%- import 'macro/filters.sql.njk' as filters %}
 
 select
-    *
+    a.*,
+    ((a.total_followers - day1.total_followers) / (a.total_followers)) * 100 as per_chng_total_followers
 from
     (
         select
-            hq,
-            st,
-            div,
-            reg,
-            type,
+            *
+        from
+            (
+                select
+                    hq,
+                    st,
+                    div,
+                    reg,
+                    type,
+                    symbol,
+                    company_name,
+                    logo_url,
+                    total_followers,
+                    row_number() over(order by ccr) as rank,
+                    ccr
+                from
+                    reports_data.master_database_table_WEBAPP
+                where
+                    1 = 1
+                    and date = (select max(date) from reports_data.master_database_table_WEBAPP)
+                    and {{ filters.globalFilter( company_name, div, req, st, symbol) }}
+            )
+        where
+            rank <= 3
+    ) a
+    left join (
+        select
             symbol,
             company_name,
-            logo_url,
-            row_number() over(order by CCR) as rank,
-            ccr as ccr
+            date,
+            total_followers
         from
             reports_data.master_database_table_WEBAPP
         where
-            1 = 1
-            and date = (select max(date) from reports_data.master_database_table_WEBAPP)
-            and {{ filters.globalFilter(company_name, DIV, HQ, REG, ST, symbol, TYPE) }}
+            date = date_sub((select max(date) from reports_data.master_database_table_WEBAPP), interval 1 day)
+    ) day1
+    on (
+        a.company_name = day1.company_name
     )
-where
-    rank <= 3
