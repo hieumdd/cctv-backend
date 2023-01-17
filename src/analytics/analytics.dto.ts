@@ -1,16 +1,30 @@
-import { IsDateString } from 'class-validator';
+import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
 
-export class GlobalFilterQueryDto {
-    companyName?: string;
+export class GlobalFilterQuery {
+    @IsString()
+    @IsOptional()
     div?: string;
-    hq?: string;
+
+    @IsString()
+    @IsOptional()
     reg?: string;
+
+    @IsString()
+    @IsOptional()
     st?: string;
+
+    @IsString()
+    @IsOptional()
     symbol?: string;
-    type?: string;
 }
 
-export class DateFilterQueryDto {
+export class CompanyFilterQuery {
+    @IsString()
+    @IsOptional()
+    companyName?: string;
+}
+
+export class DateFilterQuery {
     @IsDateString()
     start: string;
 
@@ -24,6 +38,7 @@ enum DateLevel {
     month = 'month',
 }
 
-export class DateLevelQueryDto {
+export class DateLevelQuery {
+    @IsEnum(DateLevel)
     level: DateLevel;
 }

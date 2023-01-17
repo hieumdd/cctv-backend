@@ -2,7 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { AnalyticsService } from '../analytics.service';
-import { GlobalFilterQueryDto, DateFilterQueryDto, DateLevelQueryDto } from '../analytics.dto';
+import { CompanyFilterQuery, GlobalFilterQuery, DateFilterQuery, DateLevelQuery } from '../analytics.dto';
 
 const route = 'top-24';
 
@@ -12,25 +12,25 @@ export class Top24Controller {
     constructor(private readonly analyticsService: AnalyticsService) {}
 
     @Get('top-3-ccr')
-    async top3CCR(@Query() dto: GlobalFilterQueryDto) {
-        return this.analyticsService.query(`${route}/top-3-ccr`, dto);
+    async top3CCR(@Query() globalFilter: GlobalFilterQuery) {
+        return this.analyticsService.query(`${route}/top-3-ccr`, globalFilter);
     }
 
     @Get('side-table')
-    async sideTable(@Query() dto: GlobalFilterQueryDto) {
-        return this.analyticsService.query(`${route}/side-table`, dto);
+    async sideTable(@Query() companyFilter: CompanyFilterQuery, @Query() globalFilter: GlobalFilterQuery) {
+        return this.analyticsService.query(`${route}/side-table`, { ...companyFilter, ...globalFilter });
     }
 
     @Get('trend')
     async trend(
-        @Query() dateLevelDto: DateLevelQueryDto,
-        @Query() dateFilterDto: DateFilterQueryDto,
-        @Query() globalFilterDto: GlobalFilterQueryDto,
+        @Query() dateLevel: DateLevelQuery,
+        @Query() dateFilter: DateFilterQuery,
+        @Query() globalFilter: GlobalFilterQuery,
     ) {
         return this.analyticsService.query(`${route}/trend`, {
-            ...dateLevelDto,
-            ...dateFilterDto,
-            ...globalFilterDto,
+            ...dateLevel,
+            ...dateFilter,
+            ...globalFilter,
         });
     }
 }
