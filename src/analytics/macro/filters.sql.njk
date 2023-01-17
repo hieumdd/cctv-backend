@@ -1,4 +1,4 @@
-{%- macro globalFilter(company_name, DIV, HQ, reg, ST, symbol, TYPE) -%}
+{%- macro globalFilter(company_name, div, reg, st, symbol) -%}
     (
         1 = 1
         {% if company_name %}
@@ -15,9 +15,6 @@
         {% endif %}
         {% if symbol %}
         and symbol = {{ symbol | quote }}
-        {% endif %}
-        {% if type %}
-        and type = {{ type | quote }}
         {% endif %}
     )
 {%- endmacro -%}
