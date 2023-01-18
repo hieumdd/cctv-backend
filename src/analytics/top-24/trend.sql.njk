@@ -56,7 +56,7 @@ from (
                 1 = 1
                 and date = (select max(date) from reports_data.master_database_table_WEBAPP)
                 and ccr <= 24
-                and {{ filters.globalFilter(company_name, div, reg, st, symbol) }}
+                and {{ filters.globalFilter(companyName, div, reg, st, symbol) }}
         )
         and date between {{ start | quote }} and {{ end | quote }}
 

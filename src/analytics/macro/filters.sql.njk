@@ -1,8 +1,8 @@
-{%- macro globalFilter(company_name, div, reg, st, symbol) -%}
+{%- macro globalFilter(companyName, div, reg, st, symbol) -%}
     (
         1 = 1
-        {% if company_name %}
-        and company_name = {{ company_name | quote }}
+        {% if companyName %}
+        and companyName = {{ companyName | quote }}
         {% endif %}
         {% if div %}
         and div = {{ div | quote }}

@@ -31,3 +31,5 @@ jobs:
           location: ${{ env.LOCATION }}
 
       - run: kubectl rollout restart deployments/cctv-backend
+
+      - run: kubectl rollout status deployments/cctv-backend
