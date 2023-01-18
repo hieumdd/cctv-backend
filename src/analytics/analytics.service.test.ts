@@ -28,9 +28,13 @@ describe('analytics.service', () => {
             });
         });
         it('top-24/side-table', async () => {
-            return analyticsService.query('top-24/side-table', {}).then((res) => {
-                expect(res).toBeTruthy();
-            });
+            return analyticsService
+                .query('top-24/side-table', {
+                    companyName: 'PCL CONSTRUCTION ENTERPRISES, INC.',
+                })
+                .then((res) => {
+                    expect(res).toBeTruthy();
+                });
         });
         it('top-24/trend', async () => {
             const options = {
