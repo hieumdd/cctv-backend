@@ -46,5 +46,15 @@ describe('analytics.service', () => {
                 expect(res).toBeTruthy();
             });
         });
+        it('top-24/ticker-query', async () => {
+            return analyticsService.query('top-24/ticker-query').then((res) => {
+                expect(res).toBeTruthy();
+            });
+        });
+        it('top-24/main-table', async () => {
+            return analyticsService.query('top-24/main-table').then((res) => {
+                expect(res).toBeTruthy();
+            });
+        });
     });
 });
