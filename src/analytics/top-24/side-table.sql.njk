@@ -57,38 +57,45 @@ from
         from
             (
                 select
-                    symbol,
-                    company_name,
-                    date,
-                    linkedin_followers,
-                    instagram_followers,
-                    instagram_posts,
-                    facebook_followers,
-                    facebook_page_likes,
-                    youtube_followers,
-                    youtube_views,
-                    twitter_followers,
-                    twitter_tweet,
-                    ccs,
-                    ccr,
-                    ccg,
-                    total_followers,
-                    logo_id,
-                    id,
-                    logo_url,
-                    web,
-                    hq,
-                    st,
-                    div,
-                    reg,
-                    type
+                    *
                 from
-                    reports_data.master_database_table_WEBAPP
+                    (
+                        select
+                            symbol,
+                            company_name,
+                            date,
+                            linkedin_followers,
+                            instagram_followers,
+                            instagram_posts,
+                            facebook_followers,
+                            facebook_page_likes,
+                            youtube_followers,
+                            youtube_views,
+                            twitter_followers,
+                            twitter_tweet,
+                            ccs,
+                            ccr,
+                            ccg,
+                            total_followers,
+                            logo_id,
+                            id,
+                            logo_url,
+                            web,
+                            hq,
+                            st,
+                            div,
+                            reg,
+                            type,
+                            row_number() over(order by ccr) as rank
+                        from
+                            reports_data.master_database_table_WEBAPP
+                        where
+                            1 = 1
+                            and date = (select max(date) from reports_data.master_database_table_WEBAPP)
+                            and {{ filters.globalFilter(companyName, div, req, st, symbol) }}
+                    )
                 where
-                    1 = 1
-                    and date = (select max(date) from reports_data.master_database_table_WEBAPP)
-                    and ccr <= 24
-                    and {{ filters.globalFilter(companyName, div, reg, st, symbol) }}
+                    rank <= 24
             ) current_data
             left join (
                 select
