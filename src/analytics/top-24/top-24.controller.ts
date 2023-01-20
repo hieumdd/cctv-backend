@@ -33,4 +33,14 @@ export class Top24Controller {
             ...globalFilter,
         });
     }
+
+    @Get('ticker-query')
+    async tickerQuery() {
+        return this.analyticsService.query(`${route}/ticker-query`);
+    }
+
+    @Get('main-table')
+    async mainTable(@Query() globalFilter: GlobalFilterQuery) {
+        return this.analyticsService.query(`${route}/main-table`, globalFilter);
+    }
 }

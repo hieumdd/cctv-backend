@@ -57,45 +57,41 @@ from
         from
             (
                 select
-                    *
+                    symbol,
+                    company_name,
+                    date,
+                    linkedin_followers,
+                    instagram_followers,
+                    instagram_posts,
+                    facebook_followers,
+                    facebook_page_likes,
+                    youtube_followers,
+                    youtube_views,
+                    twitter_followers,
+                    twitter_tweet,
+                    ccs,
+                    ccr,
+                    ccg,
+                    total_followers,
+                    logo_id,
+                    id,
+                    logo_url,
+                    web,
+                    hq,
+                    st,
+                    div,
+                    reg,
+                    type
                 from
-                    (
-                        select
-                            symbol,
-                            company_name,
-                            date,
-                            linkedin_followers,
-                            instagram_followers,
-                            instagram_posts,
-                            facebook_followers,
-                            facebook_page_likes,
-                            youtube_followers,
-                            youtube_views,
-                            twitter_followers,
-                            twitter_tweet,
-                            ccs,
-                            ccr,
-                            ccg,
-                            total_followers,
-                            logo_id,
-                            id,
-                            logo_url,
-                            web,
-                            hq,
-                            st,
-                            div,
-                            reg,
-                            type,
-                            row_number() over(order by ccr) as rank
-                        from
-                            reports_data.master_database_table_WEBAPP
-                        where
-                            1 = 1
-                            and date = (select max(date) from reports_data.master_database_table_WEBAPP)
-                            and {{ filters.globalFilter(companyName, div, req, st, symbol) }}
-                    )
+                    `cctc-353018.reports_data.master_database_table_WEBAPP`
                 where
-                    rank <= 24
+                    date = (
+                        select
+                            max(date)
+                        from
+                            `cctc-353018.reports_data.master_database_table_WEBAPP`
+                    ) ---- apply the filter here
+                    and ccr <= 24
             ) current_data
             left join (
                 select
@@ -125,9 +121,17 @@ from
                     reg,
                     type
                 from
-                    reports_data.master_database_table_WEBAPP
+                    `cctc-353018.reports_data.master_database_table_WEBAPP`
                 where
-                    date = date_sub((select max(date) from reports_data.master_database_table_WEBAPP), interval 1 day)
+                    date = date_sub(
+                        (
+                            select
+                                max(date)
+                            from
+                                `cctc-353018.reports_data.master_database_table_WEBAPP`
+                        ),
+                        interval 1 day
+                    )
             ) day1
             on (
                 current_data.company_name = day1.company_name
@@ -160,9 +164,17 @@ from
                     reg,
                     type
                 from
-                    reports_data.master_database_table_WEBAPP
+                    `cctc-353018.reports_data.master_database_table_WEBAPP`
                 where
-                    date = date_sub((select max(date) from reports_data.master_database_table_WEBAPP), interval 7 day)
+                    date = date_sub(
+                        (
+                            select
+                                max(date)
+                            from
+                                `cctc-353018.reports_data.master_database_table_WEBAPP`
+                        ),
+                        interval 7 day
+                    )
             ) day7
             on (
                 current_data.company_name = day7.company_name
@@ -195,9 +207,17 @@ from
                     reg,
                     type
                 from
-                    reports_data.master_database_table_WEBAPP
+                    `cctc-353018.reports_data.master_database_table_WEBAPP`
                 where
-                    date = date_sub((select max(date) from reports_data.master_database_table_WEBAPP), interval 30 day)
+                    date = date_sub(
+                        (
+                            select
+                                max(date)
+                            from
+                                `cctc-353018.reports_data.master_database_table_WEBAPP`
+                        ),
+                        interval 30 day
+                    )
             ) day30
             on (
                 current_data.company_name = day30.company_name
