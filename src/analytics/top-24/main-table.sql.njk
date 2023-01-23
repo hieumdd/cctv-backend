@@ -83,14 +83,11 @@ from
                     reg,
                     type
                 from
-                    `cctc-353018.reports_data.master_database_table_WEBAPP`
+                    reports_data.master_database_table_WEBAPP
                 where
-                    date = (
-                        select
-                            max(date)
-                        from
-                            `cctc-353018.reports_data.master_database_table_WEBAPP`
-                    ) ---- apply the filter here
+                    1 = 1
+                    and {{ filters.globalFilter(companyName, div, reg, st, symbol) }}
+                    and date = (select max(date) from reports_data.master_database_table_WEBAPP)
                     and ccr <= 24
             ) current_data
             left join (
@@ -164,17 +161,9 @@ from
                     reg,
                     type
                 from
-                    `cctc-353018.reports_data.master_database_table_WEBAPP`
+                    reports_data.master_database_table_WEBAPP
                 where
-                    date = date_sub(
-                        (
-                            select
-                                max(date)
-                            from
-                                `cctc-353018.reports_data.master_database_table_WEBAPP`
-                        ),
-                        interval 7 day
-                    )
+                    date = date_sub((select max(date) from reports_data.master_database_table_WEBAPP), interval 7 day)
             ) day7
             on (
                 current_data.company_name = day7.company_name
@@ -207,17 +196,9 @@ from
                     reg,
                     type
                 from
-                    `cctc-353018.reports_data.master_database_table_WEBAPP`
+                    reports_data.master_database_table_WEBAPP
                 where
-                    date = date_sub(
-                        (
-                            select
-                                max(date)
-                            from
-                                `cctc-353018.reports_data.master_database_table_WEBAPP`
-                        ),
-                        interval 30 day
-                    )
+                    date = date_sub((select max(date) from reports_data.master_database_table_WEBAPP), interval 30 day)
             ) day30
             on (
                 current_data.company_name = day30.company_name

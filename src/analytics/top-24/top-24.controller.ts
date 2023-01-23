@@ -40,7 +40,7 @@ export class Top24Controller {
     }
 
     @Get('main-table')
-    async mainTable(@Query() globalFilter: GlobalFilterQuery) {
-        return this.analyticsService.query(`${route}/main-table`, globalFilter);
+    async mainTable(@Query() companyFilter: CompanyFilterQuery, @Query() globalFilter: GlobalFilterQuery) {
+        return this.analyticsService.query(`${route}/main-table`, { ...companyFilter, ...globalFilter });
     }
 }
