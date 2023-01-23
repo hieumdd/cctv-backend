@@ -52,7 +52,7 @@ describe('analytics.service', () => {
             });
         });
         it('top-24/main-table', async () => {
-            return analyticsService.query('top-24/main-table').then((res) => {
+            return analyticsService.query('top-24/main-table', {div: 'ESC'}).then((res) => {
                 expect(res).toBeTruthy();
             });
         });

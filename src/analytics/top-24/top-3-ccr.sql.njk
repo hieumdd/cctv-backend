@@ -2,7 +2,7 @@
 
 select
     a.*,
-    ((a.total_followers - day1.total_followers) / (a.total_followers)) * 100 as per_chng_total_followers
+    safe_divide((a.total_followers - day1.total_followers), a.total_followers) * 100 as per_chng_total_followers
 from
     (
         select
