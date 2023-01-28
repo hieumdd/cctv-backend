@@ -15,50 +15,74 @@ select
     type,
     symbol,
     company_name,
-    rating,
-    ccr,
-    ccs,
+    max(rating) as rating,
+    avg(ccr) as ccr,
+    avg(ccs) as ccs,
     avg(total_followers) as total_followers,
     avg(linkedin_followers) as linkedin_followers,
     avg(facebook_followers) as facebook_followers,
     avg(youtube_followers) as youtube_followers,
     avg(twitter_followers) as twitter_followers,
-    avg(rank) as rank,
 from (
     select
-        date,
-        hq,
-        st,
-        div,
-        reg,
-        type,
-        symbol,
-        company_name,
-        ccg as rating,
-        ccr,
-        ccs,
-        cast(total_followers as INT64) as total_followers,
-        cast(linkedin_followers as INT64) as linkedin_followers,
-        cast(facebook_followers as INT64) as facebook_followers,
-        cast(youtube_followers as INT64) as youtube_followers,
-        cast(twitter_followers as INT64) as twitter_followers,
-        row_number() over(order by ccr) as rank,
-    from
-        reports_data.master_database_table_WEBAPP
-    where
-        1 = 1
-        and symbol in (
-            select
-                symbol
-            from
-                reports_data.master_database_table_WEBAPP
-            where
-                1 = 1
-                and date = (select max(date) from reports_data.master_database_table_WEBAPP)
-                and ccr <= 24
-                and {{ filters.globalFilter(companyName, div, reg, st, symbol) }}
-        )
-        and date between {{ start | quote }} and {{ end | quote }}
-
+        a.*,
+        rating
+    from (
+        select
+            date,
+            hq,
+            st,
+            div,
+            reg,
+            type,
+            symbol,
+            company_name,
+            ccr,
+            ccs,
+            cast(total_followers as INT64) as total_followers,
+            cast(linkedin_followers as INT64) as linkedin_followers,
+            cast(facebook_followers as INT64) as facebook_followers,
+            cast(youtube_followers as INT64) as youtube_followers,
+            cast(twitter_followers as INT64) as twitter_followers
+        from
+            reports_data.master_database_table_WEBAPP
+        where
+            1 = 1
+            and symbol in (
+                select
+                    symbol
+                from
+                    (
+                        select
+                            symbol,
+                            row_number() over(order by ccr) as rank
+                        from
+                            reports_data.master_database_table_WEBAPP
+                        where
+                            1 = 1
+                            and date = (select max(date) from reports_data.master_database_table_WEBAPP)    
+                            and {{ filters.globalFilter(companyName, div, reg, st, symbol) }}
+                    )
+                where
+                    rank <= 24
+                
+            )
+    ) a      
+    left join (
+        select
+            symbol,
+            ccg as rating
+        from
+            reports_data.master_database_table_WEBAPP
+        where
+            1 = 1
+            and date = (select max(date) from reports_data.master_database_table_WEBAPP)               
+        
+    ) b
+    on 
+        a.symbol = b.symbol
 )
-group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+where
+    date between {{ start | quote }} and {{ end | quote }}
+group by
+    1, 2, 3, 4, 5, 6, 7, 8
