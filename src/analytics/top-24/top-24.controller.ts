@@ -23,11 +23,13 @@ export class Top24Controller {
 
     @Get('trend')
     async trend(
+        @Query() companyFilter: CompanyFilterQuery,
         @Query() dateLevel: DateLevelQuery,
         @Query() dateFilter: DateFilterQuery,
         @Query() globalFilter: GlobalFilterQuery,
     ) {
         return this.analyticsService.query(`${route}/trend`, {
+            ...companyFilter,
             ...dateLevel,
             ...dateFilter,
             ...globalFilter,
