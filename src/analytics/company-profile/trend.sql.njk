@@ -1,0 +1,10 @@
+{%- import 'macro/filters.sql.njk' as filters %}
+
+select
+    *
+from
+    reports_data.master_database_table_WEBAPP
+where
+    1 = 1
+    and {{ filters.globalFilter( companyName, div, reg, st, symbol) }}
+    and date between {{ start | quote }} and {{ end | quote }}

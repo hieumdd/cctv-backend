@@ -52,7 +52,26 @@ describe('analytics.service', () => {
             });
         });
         it('top-24/main-table', async () => {
-            return analyticsService.query('top-24/main-table', {div: 'ESC'}).then((res) => {
+            return analyticsService.query('top-24/main-table', { div: 'ESC' }).then((res) => {
+                expect(res).toBeTruthy();
+            });
+        });
+    });
+
+    describe('company-profile', () => {
+        it('company-profile/main-metric', async () => {
+            return analyticsService.query('company-profile/main-metric', {}).then((res) => {
+                expect(res).toBeTruthy();
+            });
+        });
+
+        it('company-profile/trend', async () => {
+            const options = {
+                start: '2022-01-01',
+                end: '2022-02-01',
+            };
+
+            return analyticsService.query('company-profile/trend', options).then((res) => {
                 expect(res).toBeTruthy();
             });
         });
