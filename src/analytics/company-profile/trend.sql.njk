@@ -6,5 +6,22 @@ from
     reports_data.master_database_table_WEBAPP
 where
     1 = 1
-    and {{ filters.globalFilter( companyName, div, reg, st, symbol) }}
+    and symbol in (
+        select
+            symbol
+        from
+            (
+                select
+                    symbol,
+                    row_number() over(order by ccr) as rank,
+                from
+                    reports_data.master_database_table_WEBAPP
+                where
+                    1 = 1
+                    and date = (select max(date) from reports_data.master_database_table_WEBAPP)
+                    and {{ filters.globalFilter(companyName, div, reg, st, symbol) }}
+            )
+        where
+            rank <= 1
+    )
     and date between {{ start | quote }} and {{ end | quote }}

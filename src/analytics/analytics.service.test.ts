@@ -39,8 +39,8 @@ describe('analytics.service', () => {
         it('top-24/trend', async () => {
             const options = {
                 level: 'week',
-                start: '2022-01-01',
-                end: '2022-02-01',
+                start: '2023-01-05',
+                end: '2023-02-06',
             };
             return analyticsService.query('top-24/trend', options).then((res) => {
                 expect(res).toBeTruthy();
@@ -67,8 +67,9 @@ describe('analytics.service', () => {
 
         it('company-profile/trend', async () => {
             const options = {
-                start: '2022-01-01',
-                end: '2022-02-01',
+                // companyName: 'CONSTRUCTION CHANNEL',
+                start: '2023-01-05',
+                end: '2023-02-06',
             };
 
             return analyticsService.query('company-profile/trend', options).then((res) => {
