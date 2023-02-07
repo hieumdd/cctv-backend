@@ -77,4 +77,12 @@ describe('analytics.service', () => {
             });
         });
     });
+
+    describe('social-profile', () => {
+        it('social-profile/gainer-and-loser', async () => {
+            return analyticsService.query('social-profile/gainer-and-loser', {}).then((res) => {
+                expect(res).toBeTruthy();
+            });
+        });
+    });
 });
