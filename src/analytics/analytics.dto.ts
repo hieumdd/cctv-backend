@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsDateString, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class GlobalFilterQuery {
@@ -56,8 +57,9 @@ enum RankColumn {
 
 export class RankFilterQuery {
     @IsEnum(RankColumn)
-    level: RankColumn;
+    rankColumn: RankColumn;
 
     @IsNumber()
+    @Type(() => Number)
     rankThreshold: number;
 }
