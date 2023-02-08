@@ -11,9 +11,9 @@ select
     safe_divide((ccr - day1_ccr), day1_ccr) * 100 as per_chng_day1_ccr,
     safe_divide((ccr - day7_ccr), day7_ccr) * 100 as per_chng_day7_ccr,
     safe_divide((ccr - day30_ccr), day30_ccr) * 100 as per_chng_day30_ccr,
-    ccr - day1_ccr as abs_day1_ccr,
-    ccr - day7_ccr as abs_day7_ccr,
-    ccr - day30_ccr as abs_day30_ccr,
+    (ccr - day1_ccr) as abs_day1_ccr,
+    (ccr - day7_ccr) as abs_day7_ccr,
+    (ccr - day30_ccr) as abs_day30_ccr,
     safe_divide((total_followers - day1_total_followers), day1_total_followers) * 100 as per_chng_day1_follower,
     safe_divide((total_followers - day7_total_followers), day7_total_followers) * 100 as per_chng_day7_follower,
     safe_divide((total_followers - day30_total_followers), day30_total_followers) * 100 as per_chng_day30_follower,
@@ -150,19 +150,25 @@ from
                             ccp_yt,
                             ccp_tw,
                             ccp_fb,
-                            row_number() over (
-                                order by
-                                    ccr
-                            ) as rank,
+                            row_number() over (order by ccr) as rank,
+                            row_number() over (order by ccp_li desc) as rank_li,
+                            row_number() over (order by ccp_ig desc) as rank_ig,
+                            row_number() over (order by ccp_yt desc) as rank_yt,
+                            row_number() over (order by ccp_tw desc) as rank_tw,
+                            row_number() over (order by ccp_fb desc) as rank_fb,
+                            row_number() over (order by total_followers desc) as rank_total_followers,
+                            row_number() over (order by ccs desc) as rank_ccs,
                         from
                             reports_data.master_database_table_WEBAPP
                         where
                             1 = 1
-                            and date = (select max(date) from reports_data.master_database_table_WEBAPP) 
+                            and date = (select max(date) from reports_data.master_database_table_WEBAPP)
                             and {{ filters.globalFilter( companyName, div, reg, st, symbol) }}
                     )
                 where
-                    rank <= 24000
+                    {{ rankColumn }} < {{ rankThreshold }}
+                order by
+                    {{ rankColumn }}
             ) current_data
             left join (
                 select
