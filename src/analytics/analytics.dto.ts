@@ -1,4 +1,4 @@
-import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsDateString, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class GlobalFilterQuery {
     @IsString()
@@ -41,4 +41,23 @@ enum DateLevel {
 export class DateLevelQuery {
     @IsEnum(DateLevel)
     level: DateLevel;
+}
+
+enum RankColumn {
+    rank = 'rank',
+    rank_li = 'rank_li',
+    rank_ig = 'rank_ig',
+    rank_yt = 'rank_yt',
+    rank_tw = 'rank_tw',
+    rank_fb = 'rank_fb',
+    rank_total_followers = 'rank_total_followers',
+    rank_ccs = 'rank_ccs',
+}
+
+export class RankFilterQuery {
+    @IsEnum(RankColumn)
+    level: RankColumn;
+
+    @IsNumber()
+    rankThreshold: number;
 }

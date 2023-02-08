@@ -80,7 +80,23 @@ describe('analytics.service', () => {
 
     describe('social-profile', () => {
         it('social-profile/gainer-and-loser', async () => {
-            return analyticsService.query('social-profile/gainer-and-loser', {}).then((res) => {
+            const options = {
+                rankColumn: 'rank',
+                rankThreshold: 24000,
+            };
+
+            return analyticsService.query('social-profile/gainer-and-loser', options).then((res) => {
+                expect(res).toBeTruthy();
+            });
+        });
+
+        it('social-profile/loser-profile', async () => {
+            const options = {
+                rankColumn: 'rank',
+                rankThreshold: 24000,
+            };
+
+            return analyticsService.query('social-profile/loser-profile', options).then((res) => {
                 expect(res).toBeTruthy();
             });
         });
