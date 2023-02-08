@@ -89,5 +89,16 @@ describe('analytics.service', () => {
                 expect(res).toBeTruthy();
             });
         });
+
+        it('social-profile/loser-profile', async () => {
+            const options = {
+                rankColumn: 'rank',
+                rankThreshold: 24000,
+            };
+
+            return analyticsService.query('social-profile/loser-profile', options).then((res) => {
+                expect(res).toBeTruthy();
+            });
+        });
     });
 });

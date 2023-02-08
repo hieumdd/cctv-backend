@@ -12,12 +12,25 @@ export class SocialProfileController {
     constructor(private readonly analyticsService: AnalyticsService) {}
 
     @Get('gainer-and-loser')
-    async mainMetric(
+    async gainerAndLoser(
         @Query() companyFilter: CompanyFilterQuery,
         @Query() globalFilter: GlobalFilterQuery,
         @Query() rankFilter: RankFilterQuery,
     ) {
         return this.analyticsService.query(`${route}/gainer-and-loser`, {
+            ...companyFilter,
+            ...globalFilter,
+            ...rankFilter,
+        });
+    }
+
+    @Get('loser-profile')
+    async loserProfile(
+        @Query() companyFilter: CompanyFilterQuery,
+        @Query() globalFilter: GlobalFilterQuery,
+        @Query() rankFilter: RankFilterQuery,
+    ) {
+        return this.analyticsService.query(`${route}/loser-profile`, {
             ...companyFilter,
             ...globalFilter,
             ...rankFilter,
