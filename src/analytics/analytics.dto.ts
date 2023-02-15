@@ -63,19 +63,3 @@ export class RankFilterQuery {
     @Type(() => Number)
     rankThreshold: number;
 }
-
-enum CppColumn {
-    ccr = 'ccr',
-    ccs = 'ccs',
-    ccp_li = 'ccp_li',
-    ccp_ig = 'ccp_ig',
-    ccp_yt = 'ccp_yt',
-    ccp_tw = 'ccp_tw',
-    ccp_fb = 'ccp_fb',
-    total_followers = 'total_followers',
-}
-
-export class CppFilterQuery {
-    @IsEnum(CppColumn)
-    cppColumn: CppColumn;
-}

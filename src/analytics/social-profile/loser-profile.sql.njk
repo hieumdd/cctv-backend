@@ -164,8 +164,6 @@ from
                             1 = 1
                             and date = (select max(date) from reports_data.master_database_table_WEBAPP)
                             and {{ filters.globalFilter( companyName, div, reg, st, symbol) }}
-                            and {{ ccpColumn }} > 0
-                            and total_followers > 0
                     )
                 where
                     {{ rankColumn }} < {{ rankThreshold }}
