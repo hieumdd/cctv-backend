@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { CcpColumn } from './analytics.dto';
 
 import { AnalyticsModule } from './analytics.module';
 import { AnalyticsService } from './analytics.service';
@@ -90,14 +91,17 @@ describe('analytics.service', () => {
             });
         });
 
-        it('social-profile/loser-profile', async () => {
-            const options = {
-                rankColumn: 'rank',
-                rankThreshold: 24000,
-            };
+        describe('social-profile/loser-profile', () => {
+            it.each(Object.keys(CcpColumn))('%p', async (ccpColumn) => {
+                const options = {
+                    rankColumn: 'rank',
+                    rankThreshold: 24000,
+                    ccpColumn,
+                };
 
-            return analyticsService.query('social-profile/loser-profile', options).then((res) => {
-                expect(res).toBeTruthy();
+                return analyticsService.query('social-profile/loser-profile', options).then((res) => {
+                    expect(res).toBeTruthy();
+                });
             });
         });
     });
