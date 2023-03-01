@@ -24,14 +24,27 @@ describe('Auth', () => {
         await moduleRef.close();
     });
 
-    describe('Auth', () => {
-        it('Sign JWT', async () => {
+    describe('auth', () => {
+        it('sign-jwt', async () => {
             const userId = 1;
             const jwt = authService.getJwt(userId);
             console.log(jwt);
             return authService.getUserFromJwt(jwt).then((user) => {
                 expect(user.id).toBe(1);
             });
+        });
+
+        it('sign-up', async () => {
+            return authService
+                .signUp({
+                    email: 'hieumdd@gmail.com',
+                    firstName: 'First',
+                    lastName: 'Last',
+                    password: '',
+                })
+                .then((user) => {
+                    expect(user.id).toBe(3);
+                });
         });
     });
 });

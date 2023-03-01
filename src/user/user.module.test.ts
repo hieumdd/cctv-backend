@@ -7,7 +7,7 @@ import { UserService } from './user.service';
 
 jest.setTimeout(60_000);
 
-describe('Auth', () => {
+describe('auth', () => {
     let moduleRef: TestingModule;
     let userService: UserService;
 
@@ -23,8 +23,8 @@ describe('Auth', () => {
         await moduleRef.close();
     });
 
-    describe('User Service', () => {
-        it('Find One', async () => {
+    describe('user', () => {
+        it('find-one', async () => {
             const userId = 1;
             return userService.findOne(userId).then((user) => {
                 console.log(user);
