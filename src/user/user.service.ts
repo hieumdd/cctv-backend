@@ -4,7 +4,7 @@ import { EntityRepository } from '@mikro-orm/core';
 import { EntityManager } from '@mikro-orm/postgresql';
 
 import { User } from './user.entity';
-import { SignInDto } from './user.dto';
+import { SignUpDto } from './user.dto';
 
 @Injectable()
 export class UserService {
@@ -23,7 +23,7 @@ export class UserService {
         return this.userRepository.findOneOrFail({ id });
     }
 
-    async create(authDto: SignInDto) {
+    async create(authDto: SignUpDto) {
         const user = this.userRepository.create(authDto);
         await this.userRepository.persistAndFlush(user);
         return user;
