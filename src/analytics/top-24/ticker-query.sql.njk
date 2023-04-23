@@ -1,6 +1,7 @@
 select
     a.*,
     (a.total_followers - day1.total_followers) as abs_diff,
+    (day1.ccr - a.ccr) as abs_diff_ccr,
     safe_divide((a.total_followers - day1.total_followers), a.total_followers) * 100 as per_chng_total_followers
 from
     (
@@ -18,7 +19,7 @@ from
                     company_name,
                     logo_url,
                     total_followers,
-                    row_number() over(order by ccr) as rank,
+                    row_number() over(order by ccr ) as rank,
                     ccr
                 from
                     reports_data.master_database_table_WEBAPP
@@ -34,7 +35,8 @@ from
             symbol,
             company_name,
             date,
-            total_followers
+            total_followers,
+            ccr
         from
             reports_data.master_database_table_WEBAPP
         where
