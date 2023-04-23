@@ -2,6 +2,9 @@
 
 select
     *,
+    (day1_ccr - ccr) as day1_ccr_abs_diff,
+    (day7_ccr - ccr) as day7_ccr_abs_diff,
+    (day30_ccr - ccr) as day30_ccr_abs_diff,
     safe_divide((ccs - day1_ccs), day1_ccs) * 100 as per_chng_day1_ccs,
     safe_divide((ccs - day7_ccs), day7_ccs) * 100 as per_chng_day7_ccs,
     safe_divide((ccs - day30_ccs), day30_ccs) * 100 as per_chng_day30_ccs,
