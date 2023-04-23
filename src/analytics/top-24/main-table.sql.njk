@@ -1,31 +1,33 @@
 {%- import 'macro/filters.sql.njk' as filters %}
-
 select
     *,
+    (day1_ccr - ccr) as day1_ccr_abs_diff,
+    (day7_ccr - ccr) as day7_ccr_abs_diff,
+    (day30_ccr - ccr) as day30_ccr_abs_diff,
     safe_divide((ccs - day1_ccs), day1_ccs) * 100 as per_chng_day1_ccs,
-    safe_divide((ccs - day7_ccs),  day7_ccs) * 100 as per_chng_day7_ccs,
-    safe_divide((ccs - day30_ccs),  day30_ccs) * 100 as per_chng_day30_ccs,
-    safe_divide((ccr - day1_ccr),  day1_ccr) * 100 as per_chng_day1_ccr,
-    safe_divide((ccr - day7_ccr),  day7_ccr) * 100 as per_chng_day7_ccr,
-    safe_divide((ccr - day30_ccr),  day30_ccr) * 100 as per_chng_day30_ccr,
-    safe_divide((total_followers - day1_total_followers),  day1_total_followers) * 100 as per_chng_day1_follower,
-    safe_divide((total_followers - day7_total_followers),  day7_total_followers) * 100 as per_chng_day7_follower,
-    safe_divide((total_followers - day30_total_followers),  day30_total_followers) * 100 as per_chng_day30_follower,
-    safe_divide((linkedin_followers - day1_lif),  day1_lif) * 100 as per_chng_day1_lif,
-    safe_divide((linkedin_followers - day7_lif),  day7_lif) * 100 as per_chng_day7_lif,
-    safe_divide((linkedin_followers - day30_lif),  day30_lif) * 100 as per_chng_day30_lif,
-    safe_divide((instagram_followers - day1_igf),  day1_igf) * 100 as per_chng_day1_igf,
-    safe_divide((instagram_followers - day7_igf),  day7_igf) * 100 as per_chng_day7_igf,
-    safe_divide((instagram_followers - day30_igf),  day30_igf) * 100 as per_chng_day30_igf,
-    safe_divide((youtube_followers - day1_yts),  day1_yts) * 100 as per_chng_day1_yts,
-    safe_divide((youtube_followers - day7_yts),  day7_yts) * 100 as per_chng_day7_yts,
-    safe_divide((youtube_followers - day30_yts),  day30_yts) * 100 as per_chng_day30_yts,
-    safe_divide((twitter_followers - day1_twf),  day1_twf) * 100 as per_chng_day1_twf,
-    safe_divide((twitter_followers - day7_twf),  day7_twf) * 100 as per_chng_day7_twf,
-    safe_divide((twitter_followers - day30_twf),  day30_twf) * 100 as per_chng_day30_twf,
-    safe_divide((facebook_followers - day1_fbf),  day1_fbf) * 100 as per_chng_day1_fbf,
-    safe_divide((facebook_followers - day7_fbf),  day7_fbf) * 100 as per_chng_day7_fbf,
-    safe_divide((facebook_followers - day30_fbf),  day30_fbf) * 100 as per_chng_day30_fbf
+    safe_divide((ccs - day7_ccs), day7_ccs) * 100 as per_chng_day7_ccs,
+    safe_divide((ccs - day30_ccs), day30_ccs) * 100 as per_chng_day30_ccs,
+    safe_divide((ccr - day1_ccr), day1_ccr) * 100 as per_chng_day1_ccr,
+    safe_divide((ccr - day7_ccr), day7_ccr) * 100 as per_chng_day7_ccr,
+    safe_divide((ccr - day30_ccr), day30_ccr) * 100 as per_chng_day30_ccr,
+    safe_divide((total_followers - day1_total_followers), day1_total_followers) * 100 as per_chng_day1_follower,
+    safe_divide((total_followers - day7_total_followers), day7_total_followers) * 100 as per_chng_day7_follower,
+    safe_divide((total_followers - day30_total_followers), day30_total_followers) * 100 as per_chng_day30_follower,
+    safe_divide((linkedin_followers - day1_lif), day1_lif) * 100 as per_chng_day1_lif,
+    safe_divide((linkedin_followers - day7_lif), day7_lif) * 100 as per_chng_day7_lif,
+    safe_divide((linkedin_followers - day30_lif), day30_lif) * 100 as per_chng_day30_lif,
+    safe_divide((instagram_followers - day1_igf), day1_igf) * 100 as per_chng_day1_igf,
+    safe_divide((instagram_followers - day7_igf), day7_igf) * 100 as per_chng_day7_igf,
+    safe_divide((instagram_followers - day30_igf), day30_igf) * 100 as per_chng_day30_igf,
+    safe_divide((youtube_followers - day1_yts), day1_yts) * 100 as per_chng_day1_yts,
+    safe_divide((youtube_followers - day7_yts), day7_yts) * 100 as per_chng_day7_yts,
+    safe_divide((youtube_followers - day30_yts), day30_yts) * 100 as per_chng_day30_yts,
+    safe_divide((twitter_followers - day1_twf), day1_twf) * 100 as per_chng_day1_twf,
+    safe_divide((twitter_followers - day7_twf), day7_twf) * 100 as per_chng_day7_twf,
+    safe_divide((twitter_followers - day30_twf), day30_twf) * 100 as per_chng_day30_twf,
+    safe_divide((facebook_followers - day1_fbf), day1_fbf) * 100 as per_chng_day1_fbf,
+    safe_divide((facebook_followers - day7_fbf), day7_fbf) * 100 as per_chng_day7_fbf,
+    safe_divide((facebook_followers - day30_fbf), day30_fbf) * 100 as per_chng_day30_fbf
 from
     (
         select
@@ -93,7 +95,6 @@ from
                             1 = 1
                             and {{ filters.globalFilter(companyName, div, reg, st, symbol) }}
                             and date = (select max(date) from reports_data.master_database_table_WEBAPP)
-
                     )
                 where
                     rank <= 24
